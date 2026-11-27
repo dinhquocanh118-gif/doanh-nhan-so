@@ -26,7 +26,7 @@ export function matchEvidence(d,query){
    if(score)out.push({key,label,text:v,index:i,score});
   });
  }
- return out.sort((a,b)=>b.score-a.score||Number(['projects','experience'].includes(b.key))-Number(['projects','experience'].includes(a.key))).slice(0,3);
+ return out.sort((a,b)=>Number(['projects','experience'].includes(b.key))-Number(['projects','experience'].includes(a.key))||b.score-a.score).slice(0,3);
 }
 export function vcard(d){
  const escape=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n|\r/g,'\\n').replace(/([;,])/g,'\\$1');
