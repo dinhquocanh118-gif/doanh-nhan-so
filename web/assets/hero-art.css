@@ -1,0 +1,160 @@
+/* A decorative card stack. The surrounding hero supplies its background. */
+.dn-art {
+  width: 100%;
+  min-width: 0;
+  max-width: 38rem;
+  margin-inline: auto;
+  container-type: inline-size;
+  pointer-events: none;
+  user-select: none;
+}
+.dn-art__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.6;
+  isolation: isolate;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  text-align: left;
+  line-height: 1;
+}
+.dn-art__sheet {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  width: 68%;
+  aspect-ratio: 1.77;
+  border-radius: 3cqw;
+  box-sizing: border-box;
+  box-shadow: 0 1.2cqw 1.8cqw -1.1cqw rgba(7, 30, 42, .28),
+              0 4.2cqw 7.5cqw -3.3cqw rgba(7, 30, 42, .4);
+}
+.dn-art__sheet--rear {
+  top: 12%;
+  left: 23%;
+  transform: rotate(12deg);
+  background: linear-gradient(145deg, #dfefd7, #bdebcf 51%, #91c2ad);
+  border: 1px solid rgba(240, 255, 238, .7);
+}
+.dn-art__foil {
+  position: absolute;
+  inset: 0;
+  background: repeating-radial-gradient(ellipse 66% 92% at 0% 122%,
+    transparent 0 1.2cqw, rgba(51, 115, 97, .52) 1.26cqw 1.38cqw, transparent 1.44cqw 1.72cqw);
+}
+.dn-art__rear-mark {
+  position: absolute;
+  right: 6.6%;
+  top: 11%;
+  color: #315c55;
+  font: italic 700 5cqw/1 Georgia, serif;
+  letter-spacing: -.7cqw;
+}
+.dn-art__rear-caption {
+  position: absolute;
+  left: 7%;
+  bottom: 10%;
+  color: #284d48;
+  font-size: 1.7cqw;
+  font-weight: 650;
+  letter-spacing: .25cqw;
+}
+.dn-art__sheet--front {
+  top: 28%;
+  left: 8%;
+  transform: rotate(-9deg);
+  border: 1px solid rgba(151, 194, 187, .58);
+  background: linear-gradient(115deg, #142d35, #152833 54%, #14232f);
+  color: #f6faef;
+}
+.dn-art__waves {
+  position: absolute;
+  inset: 0;
+  background: repeating-radial-gradient(ellipse 49% 82% at 102% 0%,
+    transparent 0 1.25cqw, rgba(158, 207, 175, .61) 1.31cqw 1.41cqw, transparent 1.48cqw 1.8cqw);
+  mask-image: linear-gradient(93deg, transparent 24%, #000 83%);
+  -webkit-mask-image: linear-gradient(93deg, transparent 24%, #000 83%);
+}
+.dn-art__mast, .dn-art__identity, .dn-art__rule, .dn-art__foot, .dn-art__nfc {
+  position: absolute;
+}
+.dn-art__mast {
+  top: 12.5%;
+  left: 7.4%;
+  display: flex;
+  align-items: center;
+  gap: 1.35cqw;
+  font-weight: 650;
+  font-size: 1.65cqw;
+  letter-spacing: .29cqw;
+  color: #e3ecdf;
+}
+.dn-art__mast i {
+  width: 2.65cqw;
+  height: 2.65cqw;
+  border: .44cqw solid #c9e8bc;
+  border-radius: 48% 48% 48% 7%;
+  box-sizing: border-box;
+  transform: rotate(-12deg);
+}
+.dn-art__nfc {
+  right: 8%;
+  top: 11%;
+  width: 4cqw;
+  height: 3.9cqw;
+}
+.dn-art__nfc i {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.8cqw;
+  height: 2.1cqw;
+  transform: translateY(-50%);
+  border-right: .32cqw solid #dfeeda;
+  border-radius: 50%;
+}
+.dn-art__nfc i:nth-child(2) { width: 2.85cqw; height: 3.1cqw; }
+.dn-art__nfc i:nth-child(3) { width: 3.9cqw; height: 4cqw; }
+.dn-art__identity {
+  left: 7.4%;
+  top: 42%;
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+.dn-art__identity b {
+  display: grid;
+  place-items: center;
+  width: 8.2cqw;
+  height: 8.2cqw;
+  border-radius: 50%;
+  border: .17cqw solid rgba(204, 227, 197, .55);
+  background: rgba(170, 210, 174, .1);
+  color: #d8edca;
+  font: italic 3.85cqw/1 Georgia, serif;
+  letter-spacing: -.32cqw;
+}
+.dn-art__identity strong {
+  display: block;
+  font: 400 4.65cqw/1.03 Georgia, "Times New Roman", serif;
+  letter-spacing: -.17cqw;
+}
+.dn-art__identity small {
+  display: block;
+  margin-top: .86cqw;
+  color: #dce9da;
+  font-size: 1.92cqw;
+}
+.dn-art__rule {
+  bottom: 22%;
+  inset-inline: 7.4%;
+  height: 1px;
+  background: rgba(204, 224, 211, .33);
+}
+.dn-art__foot {
+  left: 7.4%;
+  bottom: 10%;
+  color: #d4e1d2;
+  font-size: 1.45cqw;
+  font-weight: 600;
+  letter-spacing: .36cqw;
+}
