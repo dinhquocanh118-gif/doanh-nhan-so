@@ -9,8 +9,12 @@ export function avatarUrl(value) {
 
 export function findAvatar(sources) {
   for (const { text } of sources) {
-    const explicit = text.match(/^\s*(?:ảnh đại diện|ảnh chân dung|avatar|profile (?:photo|picture)|headshot)\s*:\s*(https:\/\/[^\s<>]+)/im)?.[1];
-    const labeled = text.match(/!\[[^\]\n]*(?:ảnh đại diện|ảnh chân dung|profile (?:photo|picture)|headshot)[^\]\n]*\]\((https:\/\/[^\s)]+)\)/i)?.[1];
+    const explicit = text.match(
+      /^\s*(?:ảnh đại diện|ảnh chân dung|avatar|profile (?:photo|picture)|headshot)\s*:\s*(https:\/\/[^\s<>]+)/im,
+    )?.[1];
+    const labeled = text.match(
+      /!\[[^\]\n]*(?:ảnh đại diện|ảnh chân dung|profile (?:photo|picture)|headshot)[^\]\n]*\]\((https:\/\/[^\s)]+)\)/i,
+    )?.[1];
     const image = avatarUrl(explicit || labeled);
     if (image) return image;
   }

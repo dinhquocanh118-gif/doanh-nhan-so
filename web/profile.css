@@ -1,21 +1,213 @@
-.avatar-person{position:relative;overflow:hidden}.portrait{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.careerlog{list-style:none;padding:0 0 0 16px;margin:16px 0 0;border-left:2px solid #aacabb}.careerlog li{position:relative;padding:0 0 19px}.careerlog li:last-child{padding-bottom:0}.careerlog li:before{content:"";position:absolute;left:-22px;top:7px;border:2px solid white;width:8px;height:8px;border-radius:50%;background:#40816b}.careerlog time{display:block;font-size:.82rem;color:#365f55;font-weight:700}.careerlog p{color:#233e48}.profilehero .intro{color:#e1eeeb;margin-top:12px;max-width:65ch}.profilehero .actions{margin-top:16px}.projectitem{border-left:3px solid #a5c9af;padding-left:12px;margin-top:12px}.evidencelink{text-decoration:underline;color:#21594d;background:transparent;padding:0}.profilegrid>*{min-width:0}.careeredit textarea{min-height:4rem}.careeredit label{margin-bottom:8px}.profilegrid :focus{outline:2px solid #338978}.profilehero{overflow-wrap:anywhere}@media(max-width:780px){.publicmain .profilehero{margin-top:10px}.publicbar{position:static}.profilehero .actions .btn{min-height:44px}.careerlog{margin-left:4px}.publicmain .profilegrid{gap:14px}}
+.avatar-person {
+  position: relative;
+  overflow: hidden;
+}
+.portrait {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+}
+.careerlog {
+  list-style: none;
+  padding: 0 0 0 16px;
+  margin: 16px 0 0;
+  border-left: 2px solid #aacabb;
+}
+.careerlog li {
+  position: relative;
+  padding: 0 0 19px;
+}
+.careerlog li:last-child {
+  padding-bottom: 0;
+}
+.careerlog li:before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 7px;
+  border: 2px solid white;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #40816b;
+}
+.careerlog time {
+  display: block;
+  font-size: 0.82rem;
+  color: #365f55;
+  font-weight: 700;
+}
+.careerlog p {
+  color: #233e48;
+}
+.profilehero .intro {
+  color: #e1eeeb;
+  margin-top: 12px;
+  max-width: 65ch;
+}
+.profilehero .actions {
+  margin-top: 16px;
+}
+.projectitem {
+  border-left: 3px solid #a5c9af;
+  padding-left: 12px;
+  margin-top: 12px;
+}
+.evidencelink {
+  text-decoration: underline;
+  color: #21594d;
+  background: transparent;
+  padding: 0;
+}
+.profilegrid > * {
+  min-width: 0;
+}
+.careeredit textarea {
+  min-height: 4rem;
+}
+.careeredit label {
+  margin-bottom: 8px;
+}
+.profilegrid :focus {
+  outline: 2px solid #338978;
+}
+.profilehero {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 780px) {
+  .publicmain .profilehero {
+    margin-top: 10px;
+  }
+  .publicbar {
+    position: static;
+  }
+  .profilehero .actions .btn {
+    min-height: 44px;
+  }
+  .careerlog {
+    margin-left: 4px;
+  }
+  .publicmain .profilegrid {
+    gap: 14px;
+  }
+}
 
 /* Cover and identity card for the QR destination. */
-.publicmain{background:#edf2ef;min-height:calc(100vh - 62px)}
-.publicmain .profile{max-width:1040px}
-.publicmain .profilehero{position:relative;isolation:isolate;overflow:hidden;background:#fff;color:#193c37;border:1px solid #cfddd5;border-radius:20px;padding:68px clamp(22px,4vw,45px) 27px;box-shadow:0 6px 24px #193d3010}
-.publicmain .profilehero:before{content:"";position:absolute;inset:0 0 auto;height:95px;z-index:-1;background:repeating-radial-gradient(ellipse at 88% 110%,transparent 0 12px,#b3dbaf44 13px 14px,transparent 15px 22px),linear-gradient(105deg,#183f3a,#48715d 74%,#a0bc87)}
-.publicmain .profilehero .person{width:72px;height:72px;border-radius:18px;background:#d2edd2;color:#214b3e;border:4px solid white;box-shadow:0 2px 8px #243d331c}
-.publicmain .profilehero h1{font-size:clamp(2rem,4vw,3.4rem);margin-top:10px}
-.publicmain .profilehero p{color:#4b635a}
-.publicmain .profilehero .btn.light{background:#1d5346;color:#fff}
-.publicmain .profilehero .btn.ghost{color:#235143;border:1px solid #abc4b7;background:#f3f8f3}
-.publicmain .profilegrid{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px}
-.publicmain .profilegrid>.stack{border-top:4px solid #45755e}
-.publicmain .panel h2{font-size:1.25rem}
-.publicmain .careerlog{border:0;padding:0;margin:12px 0 0}
-.publicmain .careerlog li{padding:11px 0;display:grid;grid-template-columns:120px 1fr;gap:14px;border-top:1px solid #e1e9e4}
-.publicmain .careerlog li:before{display:none}
-.publicmain .careerlog time{background:#e8f2e9;padding:5px 8px;border-radius:6px;align-self:start}
-.publicmain .careerlog li p:only-child{grid-column:1/-1}
-@media(max-width:780px){.publicmain .profilegrid{grid-template-columns:minmax(0,1fr);gap:14px}.publicmain .careerlog li{grid-template-columns:minmax(80px,28%) 1fr;gap:9px}.publicmain .profilehero{padding:54px 19px 21px}.publicmain .profilehero:before{height:80px}}
+.publicmain {
+  background: #edf2ef;
+  min-height: calc(100vh - 62px);
+}
+.publicmain .profile {
+  max-width: 1040px;
+}
+.publicmain .profilehero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #fff;
+  color: #193c37;
+  border: 1px solid #cfddd5;
+  border-radius: 20px;
+  padding: 68px clamp(22px, 4vw, 45px) 27px;
+  box-shadow: 0 6px 24px #193d3010;
+}
+.publicmain .profilehero:before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 95px;
+  z-index: -1;
+  background: repeating-radial-gradient(ellipse at 88% 110%, transparent 0 12px, #b3dbaf44 13px 14px, transparent 15px 22px),
+    linear-gradient(105deg, #183f3a, #48715d 74%, #a0bc87);
+}
+.publicmain .profilehero .person {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: #d2edd2;
+  color: #214b3e;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px #243d331c;
+}
+.publicmain .profilehero h1 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  margin-top: 10px;
+}
+.publicmain .profilehero p {
+  color: #4b635a;
+}
+.publicmain .profilehero .btn.light {
+  background: #1d5346;
+  color: #fff;
+}
+.publicmain .profilehero .btn.ghost {
+  color: #235143;
+  border: 1px solid #abc4b7;
+  background: #f3f8f3;
+}
+.publicmain .profilegrid {
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 22px;
+}
+.publicmain .profilegrid > .stack {
+  border-top: 4px solid #45755e;
+}
+.publicmain .panel h2 {
+  font-size: 1.25rem;
+}
+.publicmain .careerlog {
+  border: 0;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.publicmain .careerlog li {
+  padding: 11px 0;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 14px;
+  border-top: 1px solid #e1e9e4;
+}
+.publicmain .careerlog li:before {
+  display: none;
+}
+.publicmain .careerlog time {
+  background: #e8f2e9;
+  padding: 5px 8px;
+  border-radius: 6px;
+  align-self: start;
+}
+.publicmain .careerlog li p:only-child {
+  grid-column: 1/-1;
+}
+@media (max-width: 780px) {
+  .publicmain .profilegrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .publicmain .careerlog li {
+    grid-template-columns: minmax(80px, 28%) 1fr;
+    gap: 9px;
+  }
+  .publicmain .profilehero {
+    padding: 54px 19px 21px;
+  }
+  .publicmain .profilehero:before {
+    height: 80px;
+  }
+}
+
+/* Reminder to back up the workspace key. */
+.backupnote {
+  border-left: 4px solid #c9952b;
+  margin-bottom: 18px;
+}
+.backupnote strong {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.backupnote p {
+  margin: 6px 0 12px;
+}
