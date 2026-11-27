@@ -8,7 +8,6 @@ const hash = createHash('sha256').update(workspace).digest('hex');
 const env = (extra = {}) => {
   const values = {
     OPENAI_API_KEY: 'sk-test',
-    DNS_AI_WORKSPACE_HASH: hash,
     SUPABASE_URL: 'https://db.example.test',
     SUPABASE_SERVICE_ROLE_KEY: 'service',
     ...extra,
@@ -41,10 +40,10 @@ function fakeFetch({ quota = 200, openai = 200 } = {}) {
   fn.calls = calls;
   return fn;
 }
-const post = (body, origin = 'https://dinhquocanh118-gif.github.io') =>
+const post = (body, origin = 'https://dinhquocanh118-gif.github.io', ip = '203.0.113.9') =>
   new Request('https://fn.example.test', {
     method: 'POST',
-    headers: { origin, 'content-type': 'application/json' },
+    headers: { origin, 'content-type': 'application/json', 'x-forwarded-for': ip + ', 10.0.0.1' },
     body: typeof body === 'string' ? body : JSON.stringify(body),
   });
 
@@ -53,7 +52,7 @@ test('extracts a profile after taking a database-backed quota', async () => {
   const res = await createHandler(env(), fetcher)(post({ workspace, text: 'Tên: Lan, CEO công ty A' }));
   assert.equal(res.status, 200);
   assert.equal((await res.json()).name, 'Lan');
-  assert.deepEqual(fetcher.calls[0].body, { p_hash: hash });
+  assert.deepEqual(fetcher.calls[0].body, { p_hash: hash, p_client: createHash('sha256').update('203.0.113.9').digest('hex') });
   assert.equal(fetcher.calls[0].headers.Authorization, 'Bearer service');
   assert.ok(fetcher.calls[1].url.includes('openai.com'));
 });
@@ -72,22 +71,28 @@ test('quota exhaustion and missing quota config never reach OpenAI', async () =>
   assert.equal(fetcher.calls.length, 0);
 });
 
-test('rejects unknown workspaces, bad JSON and oversized bodies', async () => {
+test('any device and workspace can use the shared key; bad input is rejected', async () => {
   const fetcher = fakeFetch();
   const handler = createHandler(env(), fetcher);
-  assert.equal((await handler(post({ workspace: 'e'.repeat(64), text: 'Tên: Lan, CEO công ty A' }))).status, 403);
+  assert.equal((await handler(post({ workspace: 'not-a-key', text: 'Tên: Lan, CEO công ty A' }))).status, 403);
   assert.equal((await handler(post('{not json'))).status, 400);
   assert.equal((await handler(post({ workspace, text: 'x'.repeat(200000) }))).status, 413);
   assert.equal((await handler(post({ workspace, text: 'ngắn' }))).status, 400);
   assert.equal(fetcher.calls.length, 0);
+  assert.equal((await handler(post({ workspace: 'e'.repeat(64), text: 'Tên: Lan, CEO công ty A' }))).status, 200);
+  assert.equal(fetcher.calls[0].body.p_hash, createHash('sha256').update('e'.repeat(64)).digest('hex'));
 });
 
-test('CORS allows the site and local development, and supports several approved workspaces', async () => {
-  const other = 'd'.repeat(64);
-  const handler = createHandler(
-    env({ DNS_AI_WORKSPACE_HASH: createHash('sha256').update(other).digest('hex') + ', ' + hash }),
+test('missing OpenAI key is reported as not configured', async () => {
+  const res = await createHandler(
+    env({ OPENAI_API_KEY: undefined }),
     fakeFetch(),
-  );
+  )(post({ workspace, text: 'Tên: Lan, CEO công ty A' }));
+  assert.equal(res.status, 503);
+});
+
+test('CORS allows the site and local development', async () => {
+  const handler = createHandler(env(), fakeFetch());
   const local = await handler(
     new Request('https://fn.example.test', { method: 'OPTIONS', headers: { origin: 'http://localhost:5173' } }),
   );

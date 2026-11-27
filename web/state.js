@@ -45,10 +45,6 @@ export function setWorkspaceKey(next) {
 }
 export const needsBackup = () => store.get(BACKUP) !== key;
 export const markBackedUp = () => store.set(BACKUP, key);
-export async function keyHash() {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key));
-  return Array.from(new Uint8Array(digest), (x) => x.toString(16).padStart(2, '0')).join('');
-}
 export const backupText = () =>
   [
     'Danhfolio · Mã không gian',

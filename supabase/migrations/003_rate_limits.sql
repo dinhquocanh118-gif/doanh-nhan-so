@@ -80,19 +80,23 @@ begin
   return public.dns_read(p_key,found_id);
 end $$;
 
--- Chỉ Edge Function (service_role) được gọi. p_hash là SHA-256 hex của mã không gian.
-create or replace function public.dns_ai_quota(p_hash text) returns boolean
+-- Chỉ Edge Function (service_role) được gọi. Khóa OpenAI dùng chung cho mọi không gian nên giới hạn
+-- theo không gian (p_hash), theo IP đã băm (p_client) và trần toàn hệ thống để chặn chi phí.
+create or replace function public.dns_ai_quota(p_hash text, p_client text) returns boolean
 language plpgsql security definer set search_path='' as $$
 begin
-  if p_hash is null or p_hash !~ '^[0-9a-f]{64}$' then raise exception 'Mã băm không hợp lệ'; end if;
+  if p_hash is null or p_hash !~ '^[0-9a-f]{64}$' or p_client is null or p_client !~ '^[0-9a-f]{64}$' then
+    raise exception 'Mã băm không hợp lệ';
+  end if;
   perform dns_private.take('ai:burst:' || p_hash, 1, interval '5 seconds');
-  perform dns_private.take('ai:' || p_hash, 30, interval '1 hour');
+  perform dns_private.take('ai:' || p_hash, 20, interval '1 hour');
+  perform dns_private.take('ai:ip:' || p_client, 30, interval '1 hour');
   perform dns_private.take('ai:all', 300, interval '1 day');
   return true;
 end $$;
 
 revoke all on all tables in schema dns_private from public, anon, authenticated;
 revoke all on function dns_private.profile_fields(), dns_private.take(text,integer,interval), dns_private.client_bucket() from public;
-revoke all on function public.dns_ai_quota(text) from public, anon, authenticated;
-grant execute on function public.dns_ai_quota(text) to service_role;
+revoke all on function public.dns_ai_quota(text,text) from public, anon, authenticated;
+grant execute on function public.dns_ai_quota(text,text) to service_role;
 commit;

@@ -5,7 +5,7 @@ import { fields, extract, lookup, rpc } from './data.js';
 import { readFile, readUrl, checkedText } from './imports.js';
 import { generate } from './ai.js';
 import { $, esc, btn, ico, msg, nice, toast, dialog, copy, download } from './ui.js';
-import { state, r, workspaceKey, setWorkspaceKey, markBackedUp, keyHash, backupText, resetEditor } from './state.js';
+import { state, r, workspaceKey, setWorkspaceKey, markBackedUp, backupText, resetEditor } from './state.js';
 import * as view from './views.js';
 
 export function start(tab = 'upload') {
@@ -210,7 +210,6 @@ const actions = {
     if (location.hash === '#key') view.keys();
     toast('Đã tải tệp sao lưu. Hãy cất ở nơi an toàn.');
   },
-  aihash: async () => copy(await keyHash()),
   jobadd: () => {
     const box = $('#jobs');
     box.insertAdjacentHTML('beforeend', view.jobInput('', box.children.length));

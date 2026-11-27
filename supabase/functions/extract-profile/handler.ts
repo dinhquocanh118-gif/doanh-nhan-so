@@ -57,19 +57,28 @@ async function readBody(req: Request): Promise<string> {
 }
 
 const hex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf), (x) => x.toString(16).padStart(2, '0')).join('');
+const sha256 = async (text: string) => hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)));
 
-// Hạn mức nằm trong Postgres nên đúng cho mọi instance của Edge Function.
-async function takeQuota(env: Env, fetcher: typeof fetch, hash: string) {
+// Địa chỉ IP do cổng Supabase chuyển tiếp; chỉ dùng dạng băm để tính hạn mức.
+function clientAddress(req: Request) {
+  const h = req.headers;
+  return (h.get('cf-connecting-ip') || h.get('x-real-ip') || (h.get('x-forwarded-for') || '').split(',')[0]).trim() || 'unknown';
+}
+
+// Hạn mức nằm trong Postgres nên đúng cho mọi instance của Edge Function. Khóa OpenAI của chủ dự án
+// được dùng chung cho mọi thiết bị, nên giới hạn theo không gian, theo IP và trần chi phí toàn hệ thống.
+async function takeQuota(env: Env, fetcher: typeof fetch, hash: string, client: string) {
   const url = env('SUPABASE_URL'),
     serviceKey = env('SUPABASE_SERVICE_ROLE_KEY');
   if (!url || !serviceKey) throw new HttpError(503, 'Hạn mức OpenAI chưa được cấu hình.');
   const res = await fetcher(url + '/rest/v1/rpc/dns_ai_quota', {
     method: 'POST',
     headers: { apikey: serviceKey, Authorization: 'Bearer ' + serviceKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ p_hash: hash }),
+    body: JSON.stringify({ p_hash: hash, p_client: client }),
     signal: AbortSignal.timeout(10000),
   });
-  if (res.status === 429) throw new HttpError(429, 'Không gian này đã dùng hết lượt OpenAI tạm thời. Hãy thử lại sau.');
+  if (res.status === 429)
+    throw new HttpError(429, 'Đã dùng hết lượt nhận diện bằng OpenAI tạm thời. Hãy thử lại sau hoặc dùng Trích xuất cơ bản.');
   if (!res.ok) throw new HttpError(503, 'Chưa kiểm tra được hạn mức OpenAI.');
 }
 
@@ -80,11 +89,7 @@ export function createHandler(env: Env, fetcher: typeof fetch = fetch) {
     if (req.method === 'OPTIONS') return new Response(null, { headers });
     if (req.method !== 'POST') return reply({ message: 'Phương thức không hợp lệ.' }, 405);
     const apiKey = env('OPENAI_API_KEY');
-    const approved = (env('DNS_AI_WORKSPACE_HASH') || '')
-      .split(',')
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean);
-    if (!apiKey || !approved.length) return reply({ message: 'OpenAI chưa được cấu hình.' }, 503);
+    if (!apiKey) return reply({ message: 'OpenAI chưa được cấu hình.' }, 503);
     try {
       let body: { workspace?: unknown; text?: unknown };
       try {
@@ -96,11 +101,9 @@ export function createHandler(env: Env, fetcher: typeof fetch = fetch) {
       const { workspace, text } = body ?? {};
       if (typeof workspace !== 'string' || !/^[0-9a-f]{64}$/.test(workspace))
         throw new HttpError(403, 'Thiếu mã không gian hợp lệ.');
-      const hash = hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(workspace)));
-      if (!approved.includes(hash)) throw new HttpError(403, 'Không gian này chưa được bật OpenAI.');
       if (typeof text !== 'string' || text.trim().length < 12 || text.length > 45000)
         throw new HttpError(400, 'Nguồn cần từ 12 đến 45.000 ký tự.');
-      await takeQuota(env, fetcher, hash);
+      await takeQuota(env, fetcher, await sha256(workspace), await sha256(clientAddress(req)));
       const upstream = await fetcher('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: { Authorization: 'Bearer ' + apiKey, 'Content-Type': 'application/json' },

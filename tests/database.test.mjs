@@ -86,17 +86,22 @@ test('profile creation is rate limited per client address, not per workspace', a
   }
 });
 
-test('AI quota is only callable by service_role and throttles each workspace', async () => {
+test('AI quota is only callable by service_role and throttles each workspace and address', async () => {
   const db = await migratedDb();
+  const quota = (hash, client) => db.query('select public.dns_ai_quota($1, $2) as ok', [hash, client]);
   try {
-    const hash = 'a'.repeat(64);
+    const ip = 'c'.repeat(64);
     await db.exec('set role anon');
-    await assert.rejects(db.query('select public.dns_ai_quota($1)', [hash]));
+    await assert.rejects(quota('a'.repeat(64), ip));
     await db.exec('reset role; set role service_role');
-    assert.equal((await db.query('select public.dns_ai_quota($1) as ok', [hash])).rows[0].ok, true);
-    await assert.rejects(db.query('select public.dns_ai_quota($1)', [hash]), (e) => e.code === 'PT429');
-    assert.equal((await db.query('select public.dns_ai_quota($1) as ok', ['b'.repeat(64)])).rows[0].ok, true);
-    await assert.rejects(db.query('select public.dns_ai_quota($1)', ['not-a-hash']));
+    assert.equal((await quota('a'.repeat(64), ip)).rows[0].ok, true);
+    await assert.rejects(quota('a'.repeat(64), ip), (e) => e.code === 'PT429', 'burst limit per workspace');
+    await assert.rejects(quota('not-a-hash', ip));
+    await assert.rejects(quota('b'.repeat(64), 'not-a-hash'));
+    // Cùng một IP đổi mã không gian liên tục vẫn bị chặn sau 30 lượt/giờ.
+    for (let i = 1; i < 30; i++) await quota(i.toString(16).padStart(64, '0'), ip);
+    await assert.rejects(quota('e'.repeat(64), ip), (e) => e.code === 'PT429', 'limit per address');
+    assert.equal((await quota('e'.repeat(64), 'd'.repeat(64))).rows[0].ok, true);
   } finally {
     await db.close();
   }
