@@ -1,3 +1,4 @@
+import {localRpc} from './localstore.js';
 export const fields={name:'Họ và tên',role:'Chức danh',company:'Doanh nghiệp',bio:'Giới thiệu',skills:'Năng lực',experience:'Kinh nghiệm',projects:'Dự án',goals:'Nhu cầu hợp tác',contact:'Liên hệ'};
 export const empty=()=>Object.fromEntries(Object.keys(fields).map(k=>[k,'']));
 export const demo={
@@ -43,7 +44,14 @@ export function lookup(draft,q,match=false){
  return {key:k,label:fields[k],text:v,overlap,score:overlap.length+(strong&&!match?3:0)};
  }).filter(x=>x.score>0&&(!match||x.overlap.length>=Math.min(2,query.length))).sort((a,b)=>b.score-a.score).slice(0,match?3:2);
 }
+// Chế độ dữ liệu: 'local' (mặc định, demo chạy ngay trong trình duyệt) hoặc 'remote' (Supabase).
+// Đổi bằng ?mode=remote hoặc ?mode=local; lựa chọn được nhớ trong trình duyệt.
+export function mode(){
+ try{const q=new URLSearchParams(location.search).get('mode');if(q==='local'||q==='remote')localStorage.setItem('dns.mode',q);const m=localStorage.getItem('dns.mode');if(m==='local'||m==='remote')return m}catch{}
+ return window.DNS_CONFIG?.mode||'local';
+}
 export async function rpc(name,args){
+ if(mode()==='local'){const v=localRpc(name,args);if(v!==undefined)return v;}
  const {projectUrl,publishableKey}=window.DNS_CONFIG;
  const res=await fetch(projectUrl+'/rest/v1/rpc/dns_'+name,{method:'POST',headers:{apikey:publishableKey,'Content-Type':'application/json'},body:JSON.stringify(args),signal:AbortSignal.timeout(20000),cache:'no-store'});
  const value=await res.json();if(!res.ok)throw Error(value.message||'Không kết nối được database.');return value;

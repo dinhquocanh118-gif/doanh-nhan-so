@@ -10,3 +10,16 @@ test('lookup uses published fields and returns no evidence for unrelated queries
  assert.deepEqual(lookup({name:demo.name},'số điện thoại'),[]);
  assert.ok(lookup(demo,'phân phối nội thất',true).some(x=>x.key==='goals'));
 });
+
+test('the demo sample text is extracted into a complete, accurate draft',async()=>{
+ const {SAMPLE_TEXT}=await import('../web/seed.js');
+ const d=extract([{text:SAMPLE_TEXT}]);
+ assert.equal(d.name,'Trương Quốc Bảo');
+ assert.equal(d.role,'Nhà sáng lập');
+ assert.equal(d.company,'Cà Phê Cao Nguyên Xanh');
+ assert.match(d.experience,/2014 - 2020/);
+ assert.match(d.projects,/Vùng cà phê hữu cơ/);
+ assert.match(d.skills,/Rang xay/);
+ assert.match(d.goals,/phân phối/);
+ assert.equal(d.contact,'bao@example.com');
+});

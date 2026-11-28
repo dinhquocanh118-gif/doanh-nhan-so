@@ -19,3 +19,61 @@
 .publicmain .careerlog time{background:#e8f2e9;padding:5px 8px;border-radius:6px;align-self:start}
 .publicmain .careerlog li p:only-child{grid-column:1/-1}
 @media(max-width:780px){.publicmain .profilegrid{grid-template-columns:minmax(0,1fr);gap:14px}.publicmain .careerlog li{grid-template-columns:minmax(80px,28%) 1fr;gap:9px}.publicmain .profilehero{padding:54px 19px 21px}.publicmain .profilehero:before{height:80px}}
+
+/* Trust tiers and organisation verification. */
+.trust{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:99px;vertical-align:middle;line-height:1.3;white-space:normal}
+.trust .ico{width:14px;height:14px;flex:none}
+.trust.ok{background:#dff3e4;color:#17603a;border:1px solid #9fd0ae}
+.trust.doc{background:#e8eff8;color:#2a4d78;border:1px solid #b6c9e2}
+.trust.self{background:#f2f0ea;color:#6a6454;border:1px solid #dcd7c9}
+.panel h2 .trust{margin-left:8px;font-size:.72rem}
+.profilehero .trustrow{margin-top:10px}
+.trustsum p{margin:6px 0 12px}
+.trustlegend{display:flex;flex-wrap:wrap;gap:8px}
+.orgmember{margin-top:14px}
+.orgmember .rowhead{align-items:flex-start;gap:12px}
+.verifyrow{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:12px 0;border-top:1px solid #e1e9e4}
+.verifyrow:first-of-type{margin-top:12px}
+.verifyrow p{color:#4b635a;margin-top:4px;overflow-wrap:anywhere}
+.verifyrow .btn{flex:none;min-height:40px}
+@media(max-width:780px){.verifyrow{flex-direction:column;gap:8px}.verifyrow .btn{width:100%}}
+
+/* Retrieval answers with citations. */
+.askchips{display:flex;flex-wrap:wrap;gap:8px}
+.askchips[hidden]{display:none}
+.chipbtn{background:#f3f8f3;color:#235143;border:1px solid #abc4b7;border-radius:99px;padding:7px 12px;font:inherit;font-size:.85rem;cursor:pointer;text-align:left}
+.chipbtn:hover{background:#e4f0e6}
+.citelist{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px}
+.cite{display:flex;gap:10px;align-items:flex-start}
+.citeno{flex:none;width:22px;height:22px;border-radius:50%;background:#1d5346;color:#fff;font-size:.75rem;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.cite p{overflow-wrap:anywhere}
+.citemeta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:5px;font-size:.82rem;color:#4b635a}
+
+/* Fit score and complementary pairs. */
+.fitcard{border:1px solid #cfddd5;border-radius:14px;padding:14px 16px;background:#f7fbf7}
+.fitscore{display:flex;gap:14px;align-items:center}
+.fitnum{font-size:2.2rem;font-weight:800;line-height:1;color:#17603a}
+.fitnum small{font-size:1rem;margin-left:2px}
+.fitscore strong{display:block}
+.fitscore small{display:block;color:#4b635a;margin-top:2px}
+.fitbar{height:8px;border-radius:99px;background:#e1e9e4;margin-top:12px;overflow:hidden}
+.fitbar span{display:block;height:100%;border-radius:99px;background:#2f8a5a}
+.fitcard.mid .fitnum{color:#8a6a12}.fitcard.mid .fitbar span{background:#c9a227}
+.fitcard.low .fitnum{color:#a0561a}.fitcard.low .fitbar span{background:#d98b3a}
+.fitcard.none .fitnum{color:#6a6454}.fitcard.none .fitbar span{background:#b9b4a4}
+.pair{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;align-items:start;margin-top:10px;padding:10px;border:1px solid #e1e9e4;border-radius:12px;background:#fff}
+.pairside small{display:block;font-size:.74rem;color:#6a7d74;margin-bottom:3px}
+.pairside.mine b{color:#1d5346}
+.pairside p{overflow-wrap:anywhere;font-size:.92rem}
+.pairarrow{color:#45755e;font-weight:700;line-height:1}
+.scenarios{padding-left:20px;display:grid;gap:8px}
+
+/* Demo walkthrough on the home page. */
+.demoflow{margin-top:18px}
+.demoflow ol{list-style:none;counter-reset:d;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0 0;padding:0}
+.demoflow li{counter-increment:d}
+.demoflow a{display:block;height:100%;padding:12px;border:1px solid #cfddd5;border-radius:12px;background:#fff;color:inherit;text-decoration:none}
+.demoflow a:hover{background:#f1f7f2}
+.demoflow a:before{content:counter(d);display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#1d5346;color:#fff;font-size:.75rem;font-weight:700;margin-bottom:6px}
+.demoflow b{display:block}
+.demoflow small{display:block;color:#4b635a;margin-top:3px}

@@ -48,6 +48,13 @@ Giải quyết **sự phân mảnh thông tin** và **rút ngắn thời gian th
 - Frontend GitHub Pages, PostgreSQL Supabase tại Singapore, migration trong `supabase/migrations/001_profiles.sql`.
 - `npm ci && npm run dev` (Node 22+), mở `http://localhost:5173`. `npm test` chạy kiểm thử quyền, phiên bản, công bố/thu hồi và trích xuất. `npm run build` xuất website vào `dist/`.
 
+### Chế độ demo (bản trình bày)
+- Mặc định website chạy **chế độ demo**: dữ liệu nằm trong trình duyệt, không cần Supabase hay khóa API. Dùng `?mode=remote` để quay lại database Supabase.
+- Có 6 hồ sơ mẫu giả định cùng một hiệp hội mẫu. Mục **Tổ chức** (mã quản trị mẫu `PHUONGNAM-DEMO`) cho phép xác nhận hoặc thu hồi từng thông tin, hiện thành huy hiệu cho đối tác. Xác nhận gắn với nội dung đã duyệt, sửa nội dung thì huy hiệu tự mất.
+- Hỏi đáp trên hồ sơ dùng truy xuất và trích dẫn (`web/rag.js`), từ chối khi hồ sơ không nêu. Tab Hợp tác chấm mức phù hợp hai chiều kèm cặp bổ trợ và gợi ý cách làm việc chung (`web/fit.js`).
+- Kịch bản trình bày 3 phút, câu hỏi phản biện và phương án dự phòng: [docs/DEMO.md](docs/DEMO.md).
+- Chưa có: xác minh danh tính, đăng nhập thật cho tổ chức, LLM diễn giải câu trả lời, đồng bộ hồ sơ tự tạo giữa các thiết bị ở chế độ demo.
+
 ### Trải nghiệm hiện có
 1. Chọn tài liệu TXT, DOCX, PDF có lớp chữ, văn bản dán hoặc liên kết công khai. URL dùng Jina Reader theo thao tác chủ động. Với LinkedIn chặn đọc, nhập PDF xuất từ LinkedIn hoặc dán nội dung.
 2. Kiểm tra bản nháp, mở nguồn để đối chiếu và sửa các trường. File gốc xử lý trên trình duyệt. Database lưu phần chữ trích xuất. PDF scan cần OCR trước.
